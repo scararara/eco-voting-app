@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Friendly Voting App</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.8.0/dist/web3.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        button { margin: 10px; padding: 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <h1>Eco-Friendly Voting App</h1>
+    <button onclick="connectWallet()">Connect Wallet</button>
+    <h2>Candidates:</h2>
+    <ul id="candidates-list"></ul>
+
+    <script>
+        let contract;
+        const contractAddress = "0x60168B1Eae11598B5E584F8f85C7213D7d048be2";
+        const contractABI = [ {
+							"inputs": [
+								{
+									"internalType": "string[]",
+									"name": "_candidateNames",
+									"type": "string[]"
+								}
+							],
+							"stateMutability": "nonpayable",
+							"type": "constructor"
+						}, ];
+
+        async function connectWallet() {
+            if (window.ethereum) {
+                window.web3 = new Web3(window.ethereum);
+                await window.ethereum.request({ method: "eth_requestAccounts" });
+                contract = new web3.eth.Contract(contractABI, contractAddress);
+                loadCandidates();
+            } else {
+                alert("Install MetaMask to use this app!");
+            }
+        }
+
+        async function loadCandidates() {
+            const candidates = await contract.methods.getCandidates().call();
+            const ul = document.getElementById("candidates-list");
+            ul.innerHTML = "";
+            candidates.forEach((candidate, index) => {
+                let li = document.createElement("li");
+                li.innerHTML = `${candidate.name} - ${candidate.votes} votes <button onclick="vote(${index})">Vote</button>`;
+                ul.appendChild(li);
+            });
+        }
+
+        async function vote(index) {
+            const accounts = await web3.eth.getAccounts();
+            await contract.methods.vote(index).send({ from: accounts[0] });
+            alert("Vote cast successfully!");
+            loadCandidates();
+        }
+    </script>
+</body>
+</html>
