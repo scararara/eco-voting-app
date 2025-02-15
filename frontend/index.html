@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Friendly Voting App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.7.4/web3.min.js"></script>
+</head>
+<body>
+    <h1>Eco-Friendly Voting App</h1>
+
+    <div id="voting-container">
+        <p>Select a project and vote for it:</p>
+        <button onclick="vote(0)">🌱 Tree Planting</button>
+        <button onclick="vote(1)">🌊 Ocean Cleanup</button>
+        <button onclick="vote(2)">🔋 Renewable Energy</button>
+    </div>
+
+    <h2>Current Votes</h2>
+    <ul>
+        <li>🌱 Tree Planting: <span id="votes-0">0</span></li>
+        <li>🌊 Ocean Cleanup: <span id="votes-1">0</span></li>
+        <li>🔋 Renewable Energy: <span id="votes-2">0</span></li>
+    </ul>
+
+    <script src="app.js"></script>
+</body>
+</html>
